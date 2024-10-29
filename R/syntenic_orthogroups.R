@@ -229,9 +229,12 @@ ofInBlk_engine <- function(gsParam,
   sb01[,`:=`(uid1 = uniqueN(ofID1), uid2 = uniqueN(ofID2)), by = "rid"]
   sb01md <- sb01[,list(n = (uid1[1] + uid2[1])/2), by = "rid"]
   propPass <- sum(sb01md$n[sb01md$n >= 40])/sum(sb01md$n)
-  if(propPass < 0.5){
+  
+  if(propPass >= 0.38){ #HK
+    cat(sprintf("%s%% syn. hits, running...   ", round(propPass,3)*100))
+  } else {
     cat(sprintf(
-      "<50%% (%s%%) of syn. hits in regions with >=40 genes, not running\n",
+      "%s%% of syn. hits in regions with >=40 genes, not running (HK threshold: 38%%) \n",
       round(propPass,3)*100))
     return(NULL)
   }
